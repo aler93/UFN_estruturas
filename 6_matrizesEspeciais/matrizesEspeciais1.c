@@ -22,7 +22,7 @@ int *montarDinamicamenteMatriz(int **m, int linhas, int colunas) {
  * e popula essa matriz com zeros
  */
 void zerarMatriz(int **m, int linhas, int colunas) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < linhas; i++)
 		for (j = 0; j < colunas; j++)
 			m[i][j] = 0;
@@ -34,7 +34,7 @@ void zerarMatriz(int **m, int linhas, int colunas) {
  * e exibe o conteudo dessa matriz linha por coluna
  */
 void exibirMatriz(int **m, int linhas, int colunas) {
-	int i,j;
+	int i, j;
 
 	for (i = 0; i < linhas; i++) {
 		for (j = 0; j < colunas; j++)
@@ -65,7 +65,7 @@ void gerarTriangularSuperiorPrincipal(int **m, int linhas, int colunas) {
 
 	srand(time(NULL));
 	for (i = 0; i < linhas; i++)
-		for (j = i+1; j < colunas; j++)
+		for (j = i + 1; j < colunas; j++)
 			m[i][j] = rand() % 100;
 }
 

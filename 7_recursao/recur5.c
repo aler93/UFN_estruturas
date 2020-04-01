@@ -10,9 +10,9 @@
  **/
 void preenche(int v[], int tamanho) {
 	int i = 0;
-	
+
 	srand(time(NULL));
-	
+
 	while (i < tamanho)
 		v[i++] = rand() % 30;
 }
@@ -23,9 +23,9 @@ void preenche(int v[], int tamanho) {
  **/
 void mostra(int v[], int tamanho) {
 	int i = 0;
-	
+
 	while (i < tamanho)
-		printf("%d\t",v[i++]);
+		printf("%d\t", v[i++]);
 	printf("\n");
 }
 
@@ -35,24 +35,25 @@ void mostra(int v[], int tamanho) {
  * ao final, retorna o maior elemento desse vetor
  **/
 int maiorR(int v[], int tamanho) {
-  mostra(v, tamanho); getch();
+	mostra(v, tamanho);
+	getch();
 	if (tamanho == 1)
-	  return v[0];
+		return v[0];
 	else {
 		int max = maiorR(v, tamanho - 1);
-	  if (max < v[tamanho - 1])
-	    return v[tamanho - 1];
-	  else return max;
-  }
+		if (max < v[tamanho - 1])
+			return v[tamanho - 1];
+		else return max;
+	}
 }
 
-int main(){
-  int v[TAM];
-  
-  preenche(v, TAM);
-  printf("");
-  mostra(v, TAM);
-  printf("\n\nMaior valor (recursao): %d", maiorR(v, TAM));
-  
-  return 1;
+int main() {
+	int v[TAM];
+
+	preenche(v, TAM);
+	printf("");
+	mostra(v, TAM);
+	printf("\n\nMaior valor (recursao): %d", maiorR(v, TAM));
+
+	return 1;
 }

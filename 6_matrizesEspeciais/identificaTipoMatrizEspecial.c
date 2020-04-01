@@ -1,13 +1,14 @@
 #include <....>
+
 #define TAM 100
 
 int ehDiagonalPrincipal(int m[TAM][]) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {
 			//procurando pelo erro
-			if ( (i == j && m[i][j] == 0) ||
-			     (i != j && m[i][j] != 0) )
+			if ((i == j && m[i][j] == 0) ||
+				(i != j && m[i][j] != 0))
 				return 0; //nao eh 
 		}
 	}
@@ -15,12 +16,12 @@ int ehDiagonalPrincipal(int m[TAM][]) {
 }
 
 int ehDiagonalSecundaria(int m[TAM][]) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {
 			//procurando pelo erro
-			if ( ((i + j == TAM - 1) && m[i][j] == 0) ||
-			     ((i + j != TAM - 1) && m[i][j] != 0) )
+			if (((i + j == TAM - 1) && m[i][j] == 0) ||
+				((i + j != TAM - 1) && m[i][j] != 0))
 				return 0; //nao eh 
 		}
 	}
@@ -28,12 +29,12 @@ int ehDiagonalSecundaria(int m[TAM][]) {
 }
 
 int ehTriangularSuperiorPrincipal(int m[TAM][]) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {
 			//procurando pelo erro
-			if ( (j > i && m[i][j] == 0) ||
-			     (j <= i && m[i][j] != 0) )
+			if ((j > i && m[i][j] == 0) ||
+				(j <= i && m[i][j] != 0))
 				return 0; //nao eh 
 		}
 	}
@@ -41,12 +42,12 @@ int ehTriangularSuperiorPrincipal(int m[TAM][]) {
 }
 
 int ehTriangularInferiorPrincipal(int m[TAM][]) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {
 			//procurando pelo erro
-			if ( (i > j && m[i][j] == 0) ||
-			     (i <= j && m[i][j] != 0) )
+			if ((i > j && m[i][j] == 0) ||
+				(i <= j && m[i][j] != 0))
 				return 0; //nao eh 
 		}
 	}
@@ -54,12 +55,12 @@ int ehTriangularInferiorPrincipal(int m[TAM][]) {
 }
 
 int ehTriangularSuperiorSecundaria(int m[TAM][]) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {
 			//procurando pelo erro
-			if ( ((i + j < TAM - 1) && m[i][j] == 0) ||
-			     ((i + j >= TAM - 1) && m[i][j] != 0) )
+			if (((i + j < TAM - 1) && m[i][j] == 0) ||
+				((i + j >= TAM - 1) && m[i][j] != 0))
 				return 0; //nao eh 
 		}
 	}
@@ -67,12 +68,12 @@ int ehTriangularSuperiorSecundaria(int m[TAM][]) {
 }
 
 int ehTriangularInferiorSecundaria(int m[TAM][]) {
-	int i,j;
+	int i, j;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {
 			//procurando pelo erro
-			if ( ((i + j > TAM - 1) && m[i][j] == 0) ||
-			     ((i + j <= TAM - 1) && m[i][j] != 0) )
+			if (((i + j > TAM - 1) && m[i][j] == 0) ||
+				((i + j <= TAM - 1) && m[i][j] != 0))
 				return 0; //nao eh 
 		}
 	}
@@ -81,8 +82,8 @@ int ehTriangularInferiorSecundaria(int m[TAM][]) {
 
 int ehEsparsa(int m[TAM][]) {
 	//TESTA TODAS AS POSSIBILIDADES ANTERIORES
-	
-	int i,j;
+
+	int i, j;
 	int qtdNaoNulos = 0;
 	for (i = 0; i < TAM; i++) {
 		for (j = 0; j < TAM; j++) {

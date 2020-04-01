@@ -10,14 +10,14 @@ Celula *inserir(int valor, Celula *topo) {
 	Celula *novo; //para alocar nova celula
 
 	//alocar memoria
-	novo = (Celula *)malloc(sizeof(Celula));
+	novo = (Celula *) malloc(sizeof(Celula));
 
 	//depositar valor
 	novo->conteudo = valor;
 
 	//engatar
 	novo->prox = topo; //o novo elemento conhece o topo
-	
+
 	return novo; //novo topo eh retornado
 }
 
@@ -30,7 +30,7 @@ Celula *remover(Celula *topo) {
 	}
 
 	lixo = topo;
-	topo = topo->prox; 
+	topo = topo->prox;
 
 	return topo;
 }

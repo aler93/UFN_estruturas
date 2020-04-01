@@ -13,12 +13,11 @@ int mostraNumerosR(valor) {
 	if (valor == 0) {
 		printf("%d\t", valor);
 		return valor;
-	}
-	else mostraNumerosR( valor - 1 );
+	} else mostraNumerosR(valor - 1);
 	printf("%d\t", valor);
 }
 
-int main(){
+int main() {
 	int valor;
 
 	//system("cls");
@@ -26,10 +25,10 @@ int main(){
 	scanf("%d", &valor);
 
 	printf("Versao iterativa\n");
-	mostraNumeros( valor );
+	mostraNumeros(valor);
 
 	printf("Versao recursiva\n");
-	mostraNumerosR( valor );
+	mostraNumerosR(valor);
 
 	return 0;
 }
