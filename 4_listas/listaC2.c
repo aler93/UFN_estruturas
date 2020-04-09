@@ -146,7 +146,22 @@ Celula *excluir(int valor, Celula *lista) {
 		pR->prox = lista;
 		free(p);
 	}
+
 	return lista;
+}
+
+Celula *destruirLista(Celula *lista) {
+	Celula *pR, *p;
+
+	if (!lista) return lista;
+
+	for (pR = lista, p = lista->prox; p->prox != lista ; pR = p, p = p->prox) {
+		free(pR);
+	}
+	free(pR);
+	free(p);
+
+	return NULL;
 }
 
 int main() {
@@ -157,11 +172,17 @@ int main() {
 	printf("Lista circular com %d elementos\n", contar(listaC));
 	exibir(listaC);
 
-	int numero;
+	listaC = destruirLista(listaC);
+
+	printf("Lista circular com %d elementos\n", contar(listaC));
+	exibir(listaC);
+
+	/*int numero;
 	printf("Digite um número para remover da lista circular: ");
 	scanf("%d", &numero);
 	listaC = excluir(numero, listaC);
 	printf("Lista circular depois da exclusão: %d elementos\n", contar(listaC));
-	exibir(listaC);
+	exibir(listaC);*/
+
 	return 1;
 }
