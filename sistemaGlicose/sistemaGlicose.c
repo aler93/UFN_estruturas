@@ -22,7 +22,9 @@ int main() {
 		if( input == 0 ) {
 			termCyan(true);
 			printf("\nSo long; Au revoir; Tchau\n");
-			destruirLista(lista);
+			if(lista) {
+				destruirLista(lista);
+			}
 			break;
 		} else if( input == 1 ) {
 			arquivo = readFile(arquivo);
