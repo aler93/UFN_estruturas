@@ -1,8 +1,9 @@
 /**
- * @Developer: Alisson Naimayer (09/04/2020)
+ * @author: Alisson Naimayer (09/04/2020)
  * @Contact: anaimayer3@gmail.com
  * @Compiler: LLVM/Clang
- * @OS: Fedora 31 x64
+ * @OS: Fedora 31 x86_64
+ * @copyright: GPLv2
 */
 
 void termDefault() {

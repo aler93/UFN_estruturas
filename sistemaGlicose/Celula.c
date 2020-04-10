@@ -1,13 +1,14 @@
 /**
- * @Developer: Alisson Naimayer (09/04/2020)
+ * @author: Alisson Naimayer (09/04/2020)
  * @Contact: anaimayer3@gmail.com
  * @Compiler: LLVM/Clang
- * @OS: Fedora 31 x64
+ * @OS: Fedora 31 x86_64
+ * @copyright: GPLv2
 */
 
 typedef struct node {
 	int valor;
-	char text[50];
+	char data[50];
 	struct node *prox;
 } Celula;
 
@@ -17,7 +18,7 @@ static int generateMax = 100;
 /// @param lista *Celula - ponteiro da Celula
 /// @return int - numero de elementos exibidos
 void mudarNumMaxGerado(int val) {
-	if( val <= 0 ) {
+	if( val <= 0 || val > 1000 ) {
 		printf("O valor deve estar entre 0 e 1000");
 	}
 
@@ -37,9 +38,9 @@ int exibir(Celula *lista) {
 
 	for( p = lista; p; p = p->prox ) {
 		if( generateMax > 100 ) {
-			printf("%03d  |  ", p->valor);
+			printf("%03d\n", p->valor);
 		} else {
-			printf("%02d  |  ", p->valor);
+			printf("%02d\n", p->valor);
 		}
 
 		i++;
@@ -52,11 +53,17 @@ int exibir(Celula *lista) {
 
 /// exibirLinhas - Quebra linha após certo número
 /// @param lista *Celula - ponteiro da Celula
-/// @param maxLinha uint - Número máximo de elemento por linha
+/// @param limit uint - Número máximo de elemento por linha
 /// @return int - numero de elementos exibidos
-int exibirLinhas(Celula *lista, uint maxLinha) {
+int exibirLinhas(Celula *lista, uint limit) {
 	Celula *p;
 	uint i = 0;
+
+	if( limit == 0 ) {
+		printf("O limite deve ser maior do que zero");
+
+		return 0;
+	}
 
 	if( !lista ) {
 		printf("Lista vazia.\n");
@@ -65,7 +72,7 @@ int exibirLinhas(Celula *lista, uint maxLinha) {
 	}
 
 	for( p = lista; p; p = p->prox ) {
-		if( i % maxLinha == 0 ) {
+		if( i % limit == 0 ) {
 			printf("\n");
 		}
 
@@ -178,9 +185,12 @@ Celula *destruirLista(Celula *lista) {
 	}
 	free(pR);
 
+	printf("Memória liberada\n");
+
 	return NULL;
 }
 
+/// excluirFaixa - Excluir elementos da lista com valor entre $inicio e $fim
 /// @param inicio int - Excluir valores maiores &&
 /// @param fim int - Excluir valores menores
 /// @param lista *Celula - Ponteiro da Celula
@@ -188,4 +198,58 @@ Celula *destruirLista(Celula *lista) {
 Celula *excluirFaixa(int inicio, int fim, Celula *lista) {
 	// TODO
 	return NULL;
+}
+
+/// @param data char[50] - data DD/MM/YYYY para ser inserida na lista
+/// @param valor int - Valor para ser inserido na lista
+/// @param lista *Celula - Ponteiro da Celula
+/// @return Celula - Ponteiro da própria lista
+Celula *inserirGlicose(char data[50], int valor, Celula *lista) {
+	Celula *novo;
+
+	novo = (Celula *) malloc(sizeof(Celula));
+	strcpy(novo->data, data);
+	novo->valor = valor;
+	novo->prox = lista;
+
+	return novo;
+}
+
+/// exibirLinhasGlicose - Quebra linha após certo número
+/// @param lista *Celula - ponteiro da Celula
+/// @param limit uint - Número máximo de elemento por linha
+/// @return int - numero de elementos exibidos
+int exibirLinhasGlicose(Celula *lista, uint limit) {
+	Celula *p;
+	uint i = 0;
+
+	if( limit == 0 ) {
+		printf("O limite deve ser maior do que zero");
+
+		return 0;
+	}
+
+	if( !lista ) {
+		printf("Lista vazia.\n");
+
+		return 0;
+	}
+
+	for( p = lista; p; p = p->prox ) {
+		if( i % limit == 0 ) {
+			printf("\n");
+		}
+
+		if( generateMax > 100 ) {
+			printf("%s: %03d  |  ", p->data, p->valor);
+		} else {
+			printf("%s: %02d  |  ", p->data, p->valor);
+		}
+
+		i++;
+	}
+
+	printf("\n");
+
+	return i;
 }

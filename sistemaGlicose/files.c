@@ -1,34 +1,55 @@
 /**
- * @Developer: Alisson Naimayer (09/04/2020)
+ * @author: Alisson Naimayer (09/04/2020)
  * @Contact: anaimayer3@gmail.com
  * @Compiler: LLVM/Clang
- * @OS: Fedora 31 x64
+ * @OS: Fedora 31 x86_64
+ * @copyright: GPLv2
 */
 
 #include "files.h"
 
-/// @setFileName: Define o nome do arquivo para ler
+/// setFileName - Define o nome do arquivo para ler
 void setFileName() {
 	char name[200];
-	printf("Nome do arquivo:\n > ");
-	scanf("%s", name);
+	while( strlen(name) <= 4 ) {
+		printf("Nome do arquivo:\n > ");
+		scanf("%s", name);
+
+		if( strlen(name) <= 4 ) {
+			termYellow(false);
+			printf("  - Adicione '.txt' no final do nome\n");
+			termDefault();
+		}
+	}
 
 	strcpy(fileName, name);
 }
 
-/// @defineFileName: Define o nome do arquivo previamente
+/// defineFileName - Define o nome do arquivo previamente
+/// @param name - char[200] Nome do arquivo
 void defineFileName(char name[200]) {
 	strcpy(fileName, name);
 }
 
-void readFile() {
-	while( strlen(fileName) == 0 ) {
-		setFileName();
-	}
+/// readFile - Procura e lê um arquivo
+/// @return *FILE || NULL
+FILE *readFile(FILE *fileP) {
+	//setFileName();
+	defineFileName("data.txt");
+	fileP = fopen(fileName, "r");
 
-	termRed(true);
-	printf("Abrindo arquivo: %s\n", fileName);
+	if( !fileP ) {
+		termRed(true);
+		printf("  - Arquivo %s não existe\n", fileName);
+		termDefault();
+
+		exit(-1);
+	}
+	termGreen(true);
+	printf("  - Arquivo localizado\n");
 	termDefault();
+
+	return fileP;
 }
 
 void writeToFile() {
