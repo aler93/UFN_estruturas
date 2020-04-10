@@ -206,13 +206,54 @@ Celula *excluirFaixa(int inicio, int fim, Celula *lista) {
 /// @return Celula - Ponteiro da própria lista
 Celula *inserirGlicose(char data[50], int valor, Celula *lista) {
 	Celula *novo;
-
 	novo = (Celula *) malloc(sizeof(Celula));
+
 	strcpy(novo->data, data);
 	novo->valor = valor;
 	novo->prox = lista;
 
 	return novo;
+}
+
+/// @param valor int - Ponteiro da Celula
+/// @param data char[15] - Ponteiro da Celula
+/// @param lista *Celula - Ponteiro da Celula
+/// @return *Celula - Ponteiro da própria lista
+Celula *inserirGlicoseOrdenado(int valor, char data[15], Celula *lista) {
+	Celula *novo;
+	Celula *p, *pR;
+
+	novo = (Celula *)malloc(sizeof(Celula));
+
+	novo->valor = valor;
+	strcpy(novo->data, data);
+	novo->prox = NULL;
+
+	if (!lista) {
+		return novo;
+	}
+
+	for (pR = NULL, p = lista; p ; pR = p, p = p->prox) {
+		if (valor < p->valor) {
+			break;
+		}
+	}
+
+	//printf("Pos encontrada\n");
+
+	if (!pR) {
+		novo->prox = p;
+
+		return novo;
+	} else if (p == NULL) {
+		pR->prox = novo;
+	} else {
+		pR->prox = novo;
+		novo->prox = p;
+	}
+
+
+	return lista;
 }
 
 /// exibirLinhasGlicose - Quebra linha após certo número
