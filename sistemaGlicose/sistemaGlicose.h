@@ -22,12 +22,19 @@
 
 void new();
 void printMenu();
-void corrigirData(char data[10], int dia, int mes, int ano);
+void mediana(Celula *lista);
+void exibirOrdenadoGlicose(Celula *lista);
+void corrigirData(char data[15], int dia, int mes, int ano);
 
 int menorValor(Celula *lista);
 int maiorValor(Celula *lista);
 
 float calcularMedia(Celula *lista);
+
+Celula *limitarLeitura(Celula *lista);
 Celula *fileToMemory(FILE *arquivo, Celula *destino);
+
+int limitLines = -1;
+int limitCols = 3;
 
 #endif //UFN_ESTRUTURAS_SISTEMAGLICOSE_H

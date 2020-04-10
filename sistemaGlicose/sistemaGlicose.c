@@ -21,41 +21,36 @@ int main() {
 
 		if( input == 0 ) {
 			termCyan(true);
-			printf("Au revoir\n");
+			printf("\nSo long; Au revoir; Tchau\n");
+			destruirLista(lista);
 			break;
-		}
-		if( input == 1 ) {
+		} else if( input == 1 ) {
 			arquivo = readFile(arquivo);
 			lista = fileToMemory(arquivo, lista);
-			continue;
-		}
-		if( input == 2 ) {
-			exibirLinhasGlicose(lista, 3);
-			continue;
-		}
-		if( input == 3 ) {
+		} else if( input == 2 ) {
+			exibirLinhasGlicose(lista, limitCols);
+		} else if( input == 3 ) {
 			calcularMedia(lista);
-			continue;
-		}
-		if( input == 4 ) {
-			// TODO
-			continue;
-		}
-		if( input == 5 ) {
+		} else if( input == 4 ) {
+			mediana(lista);
+		} else if( input == 5 ) {
 			menorValor(lista);
-			continue;
-		}
-		if( input == 6 ) {
+		} else if( input == 6 ) {
 			maiorValor(lista);
-			continue;
-		}
-		if( input == 7 ) {
-			destruirLista(lista);
-			continue;
+		} else if( input == 7 ) {
+			lista = destruirLista(lista);
+		} else if( input == 8 ) {
+			exibirOrdenadoGlicose(lista);
+		} else if( input == 9 ) {
+			lista = limitarLeitura(lista);
 		} else {
 			termYellow(true);
-			printf("Comando não reconhecido\n");
+			printf("Comando não encontrado\n");
 		}
+		termDefault();
+		printf("\nPressione enter para continuar");
+		while( getchar() != '\n' );
+		getchar();
 	}
 
 	termDefault();
@@ -80,6 +75,8 @@ void printMenu() {
 	printf("\t 5 - Menor valor glicêmico\n");
 	printf("\t 6 - Maior valor glicêmico\n");
 	printf("\t 7 - Remover lista da memória\n");
+	printf("\t 8 - Exibir lista ordenada por valor da glicose\n");
+	printf("\t 9 - Impor limite de linhas para leitura\n");
 	printf("\t 0 - sair\n");
 	printf("Escolha uma opção\n > ");
 }
@@ -94,16 +91,21 @@ Celula *fileToMemory(FILE *arquivo, Celula *destino) {
 	int d, m, y;
 
 	termGreen(false);
-	printf("  - Escrevendo arquivo na memória...\n");
+	printf("    - Escrevendo arquivo na memória...\n");
 	while( !feof(arquivo)) {
 		line++;
 		fscanf(arquivo, "%d/%d/%d\t%d", &m, &d, &y, &valor);
 		corrigirData(data, d, m, y);
 
 		destino = inserirGlicose(data, valor, destino);
+
+		if( limitLines > 0 && line >= limitLines ) {
+			break;
+		}
 	}
 
 	fclose(arquivo);
+	printf("    - Pronto...\n");
 
 	return destino;
 }
@@ -130,7 +132,7 @@ float calcularMedia(Celula *lista) {
 
 		media = (float) total / qnt;
 		termGreen(false);
-		printf("A media dos %d dias é %.2f\n\n", qnt, media);
+		printf("A media dos %d dias é %.2f\n", qnt, media);
 	}
 
 	return media;
@@ -156,7 +158,7 @@ int menorValor(Celula *lista) {
 		}
 
 		termGreen(false);
-		printf("O menor valor é %d, no dia %s\n\n", menor->valor, menor->data);
+		printf("O menor valor é %d, no dia %s\n", menor->valor, menor->data);
 
 		return menor->valor;
 	}
@@ -184,10 +186,112 @@ int maiorValor(Celula *lista) {
 		}
 
 		termGreen(false);
-		printf("O maior valor é %d, no dia %s\n\n", maior->valor, maior->data);
+		printf("O maior valor é %d, no dia %s\n", maior->valor, maior->data);
 
 		return maior->valor;
 	}
 
 	return 0;
+}
+
+void mediana(Celula *lista) {
+	if( lista ) {
+		Celula *p = NULL, *ordenada;
+
+		ordenada = (Celula *) malloc(sizeof(Celula));
+
+		for( p = lista; p; p = p->prox ) {
+			if( p == lista ) {
+				ordenada->valor = p->valor;
+				strcpy(ordenada->data, p->data);
+				ordenada->prox = NULL;
+
+				continue;
+			}
+
+			ordenada = inserirGlicoseOrdenado(p->valor, p->data, ordenada);
+		}
+
+		int tam = contar(ordenada);
+		int meio = tam / 2;
+		int i = 0;
+		if( tam % 2 == 0 ) {
+			printf("Lista par, pos meio %d e %d = ", meio - 1, meio);
+
+			Celula *pR;
+			for( pR = NULL, p = ordenada; p; pR = p, p = p->prox ) {
+				if( i == meio ) {
+					printf("%d e %d, nos dias %s e %s, respectivamente\n",
+						   p->valor,
+						   pR->valor,
+						   p->data,
+						   pR->data
+					);
+
+					break;
+				}
+				i++;
+			}
+		} else {
+			printf("Lista ímpar, posição do meio %d = ", meio);
+			for( p = ordenada; p; p = p->prox ) {
+				if( i == meio ) {
+					printf("%d, no dia %s\n", p->valor, p->data);
+
+					break;
+				}
+				i++;
+			}
+		}
+
+		return;
+	}
+
+	printf("Lista não definida\n");
+}
+
+Celula *limitarLeitura(Celula *lista) {
+	int input = -1;
+	termBlue(true);
+	printf("Máximo de linhas para ler (-1 = ilimitado):\n > ");
+	termBlue(false);
+	scanf("%d", &input);
+
+	limitLines = input;
+	termBlue(true);
+	printf("Limite alterado.\n");
+	termDefault();
+
+	if( lista ) {
+		lista = destruirLista(lista);
+	}
+
+	return lista;
+}
+
+/// Apenas exibe, não altera a lista original
+void exibirOrdenadoGlicose(Celula *lista) {
+	if( lista ) {
+		Celula *p = NULL, *ordenada;
+
+		ordenada = (Celula *) malloc(sizeof(Celula));
+
+		for( p = lista; p; p = p->prox ) {
+			if( p == lista ) {
+				ordenada->valor = p->valor;
+				strcpy(ordenada->data, p->data);
+				ordenada->prox = NULL;
+
+				continue;
+			}
+
+			ordenada = inserirGlicoseOrdenado(p->valor, p->data, ordenada);
+		}
+
+		exibirLinhasGlicose(ordenada, limitCols);
+
+		return;
+	}
+
+	printf("Lista não definida\n\n");
 }
