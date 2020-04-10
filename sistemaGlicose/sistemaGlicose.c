@@ -198,6 +198,7 @@ int maiorValor(Celula *lista) {
 	return 0;
 }
 
+/// @param lista Celula - lista contendo os dados
 void mediana(Celula *lista) {
 	if( lista ) {
 		Celula *p = NULL, *ordenada;
@@ -220,7 +221,7 @@ void mediana(Celula *lista) {
 		int meio = tam / 2;
 		int i = 0;
 		if( tam % 2 == 0 ) {
-			printf("Lista par, pos meio %d e %d = ", meio - 1, meio);
+			printf("Lista par, glicose: ");
 
 			Celula *pR;
 			for( pR = NULL, p = ordenada; p; pR = p, p = p->prox ) {
@@ -237,7 +238,7 @@ void mediana(Celula *lista) {
 				i++;
 			}
 		} else {
-			printf("Lista ímpar, posição do meio %d = ", meio);
+			printf("Lista ímpar, glicose: ");
 			for( p = ordenada; p; p = p->prox ) {
 				if( i == meio ) {
 					printf("%d, no dia %s\n", p->valor, p->data);
@@ -254,6 +255,8 @@ void mediana(Celula *lista) {
 	printf("Lista não definida\n");
 }
 
+/// limitarLeitura - Altera a quantidade máxima de linhas lidas do arquivo
+/// @param lista Celula - lista contendo os dados
 Celula *limitarLeitura(Celula *lista) {
 	int input = -1;
 	termBlue(true);
@@ -274,6 +277,7 @@ Celula *limitarLeitura(Celula *lista) {
 }
 
 /// Apenas exibe, não altera a lista original
+/// @param lista Celula - lista contendo os dados
 void exibirOrdenadoGlicose(Celula *lista) {
 	if( lista ) {
 		Celula *p = NULL, *ordenada;

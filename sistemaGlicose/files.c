@@ -52,6 +52,7 @@ FILE *readFile(FILE *fileP) {
 	return fileP;
 }
 
+/// @attention
 void writeToFile() {
 	// TODO
 }

@@ -12,7 +12,7 @@ typedef struct node {
 	struct node *prox;
 } Celula;
 
-static int generateMax = 100;
+static int generateMax = 100; // Máximo do rand(). Usado para popular lista com valores aleatórios
 
 /// Mudar valor máximo gerado aleatóriamente pela função popula
 /// @param lista *Celula - ponteiro da Celula
@@ -114,7 +114,7 @@ Celula *inserir(int valor, Celula *lista) {
 }
 
 /// @param lista *Celula - Ponteiro da Celula
-/// @param quantidade uint - Valor para ser inserido na lista
+/// @param quantidade uint - Quantidade de valores para inserir na Celula
 /// @return *Celula - A própria lista
 Celula *popula(Celula *lista, uint quantidade) {
 	uint i;
@@ -190,6 +190,7 @@ Celula *destruirLista(Celula *lista) {
 	return NULL;
 }
 
+/// @attention
 /// excluirFaixa - Excluir elementos da lista com valor entre $inicio e $fim
 /// @param inicio int - Excluir valores maiores &&
 /// @param fim int - Excluir valores menores
@@ -238,8 +239,6 @@ Celula *inserirGlicoseOrdenado(int valor, char data[15], Celula *lista) {
 			break;
 		}
 	}
-
-	//printf("Pos encontrada\n");
 
 	if (!pR) {
 		novo->prox = p;

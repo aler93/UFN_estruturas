@@ -34,7 +34,7 @@ float calcularMedia(Celula *lista);
 Celula *limitarLeitura(Celula *lista);
 Celula *fileToMemory(FILE *arquivo, Celula *destino);
 
-int limitLines = -1;
-int limitCols = 3;
+int limitLines = -1; // Quantidade máxima de linhas em um arquivo; -1 = ilimitado
+int limitCols = 3; // Controla a quantidade de colunas exibidas no terminal (exibirLinhas)
 
 #endif //UFN_ESTRUTURAS_SISTEMAGLICOSE_H
