@@ -22,13 +22,15 @@ int main() {
 		if( input == 0 ) {
 			termCyan(true);
 			printf("\nSo long; Au revoir; Tchau\n");
-			if(lista) {
+			if( lista ) {
 				destruirLista(lista);
 			}
 			break;
 		} else if( input == 1 ) {
 			arquivo = readFile(arquivo);
-			lista = fileToMemory(arquivo, lista);
+			if( arquivo ) {
+				lista = fileToMemory(arquivo, lista);
+			}
 		} else if( input == 2 ) {
 			exibirLinhasGlicose(lista, limitCols);
 		} else if( input == 3 ) {

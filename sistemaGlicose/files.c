@@ -34,8 +34,8 @@ void defineFileName(char name[200]) {
 /// readFile - Procura e lê um arquivo
 /// @return *FILE || NULL
 FILE *readFile(FILE *fileP) {
-	//setFileName();
-	defineFileName("data.txt");
+	setFileName();
+
 	fileP = fopen(fileName, "r");
 
 	if( !fileP ) {
@@ -43,7 +43,7 @@ FILE *readFile(FILE *fileP) {
 		printf("  - Arquivo %s não existe\n", fileName);
 		termDefault();
 
-		exit(-1);
+		return NULL;
 	}
 	termGreen(true);
 	printf("  - Arquivo localizado\n");
