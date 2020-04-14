@@ -12,9 +12,15 @@
 #include <time.h>
 #include <locale.h>
 
-//Celula serve tanto para lista simples quanto para lista circular
 typedef struct nodo {
 	int conteudo;
 	struct nodo *ant;
 	struct nodo *prox;
 } CelulaD;
+
+int contarDupla(CelulaD *lista);
+int exibirDupla(CelulaD *lista);
+CelulaD *localizarDupla(int valor, CelulaD *lista);
+CelulaD *inserirDupla(int valor, CelulaD *lista);
+CelulaD *excluirDupla(int valor, CelulaD *lista);
+CelulaD *destruirDupla(CelulaD *lista);
