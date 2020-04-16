@@ -255,6 +255,46 @@ void mediana(Celula *lista) {
 	printf("Lista não definida\n");
 }
 
+typedef struct {
+	bool par;
+	int valor1;
+	int valor2;
+} Retorno;
+
+Retorno *medianaa(Celula *lista) {
+	Celula *p, *pR;
+	Retorno *resultado = (Retorno *) malloc(sizeof(Retorno));
+
+	int tam = contar(lista);
+	int meio = tam / 2;
+	int i = 0;
+
+	if( tam % 2 == 0 ) {
+		resultado->par = true;
+		for( pR = NULL, p = lista; p; pR = p, p = p->prox ) {
+			if( i == meio ) {
+				resultado->valor1 = p->valor;
+				resultado->valor2 = pR->valor;
+
+				break;
+			}
+			i++;
+		}
+	} else {
+		resultado->par = false;
+		for( p = lista; p; p = p->prox ) {
+			if( i == meio ) {
+				resultado->valor1 = p->valor;
+
+				break;
+			}
+			i++;
+		}
+	}
+
+	return resultado;
+}
+
 /// limitarLeitura - Altera a quantidade máxima de linhas lidas do arquivo
 /// @param lista Celula - lista contendo os dados
 Celula *limitarLeitura(Celula *lista) {
