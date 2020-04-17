@@ -27,7 +27,6 @@ void inicializacao(Fila *f);
 void inserirFila(int valor, Fila *f);
 
 void new();
-void atender(Fila *atd);
 
 int removerFila(Fila *f);
 

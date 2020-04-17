@@ -35,7 +35,7 @@ int main() {
 				prioridade = rand() % 100; // nível de prioridade
 				if( prioridade > prioritarias ) {
 					termGreen(false);
-					printf("t%d: Retirada a ficha %d (normal) para atendimento\n", id, ficha);
+					printf("t%d: Gerada a ficha %d (normal) para atendimento\n", id, ficha);
 					termDefault();
 
 					inserirFila(ficha, &normal);
@@ -43,7 +43,7 @@ int main() {
 					atdN++;
 				} else {
 					termYellow(false);
-					printf("t%d: Retirada a ficha %d (prioritária) para atendimento\n", id, ficha);
+					printf("t%d: Gerada a ficha %d (prioritária) para atendimento\n", id, ficha);
 					termDefault();
 
 					inserirFila(ficha, &prioritaria);
@@ -59,13 +59,12 @@ int main() {
 			if( id == 1 || id == 2 ) {
 				if( normal.cabeca ) {
 					if( nmrAtd > 2 ) {
-						printf("\tt%d: Dando preferência para prioritárias\n", id);
 						if( prioritaria.cabeca ) {
-							printf("\tt%d: A ficha %d foi atendida\n", id, prioritaria.cabeca->numFicha);
+							printf("\tt%d: Dando preferência para ficha %d (prioritária)\n", id, prioritaria.cabeca->numFicha);
 							removerFila(&prioritaria);
 							sleep(tempoAtender);
 						} else {
-							printf("\tt%d: Não há fila prioritária\n", id);
+							printf("\tt%d: Não há fila prioritária. Resumindo atendimento\n", id);
 							nmrAtd = 0;
 						}
 
