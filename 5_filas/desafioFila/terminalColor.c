@@ -1,7 +1,7 @@
 /**
  * @author: Alisson Naimayer (09/04/2020)
  * @Contact: anaimayer3@gmail.com
- * @Compiler: LLVM/Clang
+ * @Compiler: LLVM/Clang || GCC
  * @OS: Fedora 31 x86_64
  * @copyright: GPLv2
 */
