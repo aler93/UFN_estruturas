@@ -2,60 +2,109 @@
 // Created by Alisson Naimayer on 16/04/2020.
 //
 
-#include "desafioFila.h"
+#include "desafioFilaOMP.h"
 
 int main() {
 	new();
+
+	int prioritarias = 50; // Porcentagem de fichas prioritarias geradas
+	int tamanhoFila = 50;
+
 	int prioridade, ficha = 1;
-	int prioritarias = 10; // Porcentagem de fichas prioritarias geradas
 	Fila normal, prioritaria;
+
+	int tempoAtender = 3, tempoGerar = 1;
 
 	inicializacao(&normal);
 	inicializacao(&prioritaria);
 
-	int tamanhoFila = 120, atdP = 0, atdN = 0, nmrAtd = 0, rm;
+	int atdP = 0, atdN = 0, nmrAtd = 0, rm;
 	int i, id, chunk;
 
-	// define duas threads para o sistema; t0 = gera ficha, t1 atende a ficha
-	//omp_set_num_threads(2);
-#pragma omp parallel private( nmrAtd, id ) shared( normal, prioritaria, ficha ) num_threads(2)
+	// define quatro threads para o sistema;
+	// t0 "recepcionista" = Gera fichas para serem atendidas;
+	// t1 e t2 "Atendimento", atende a fila normal, e a cada três atendimentos ajuda com a fila prioritária;
+	// t3 "Atedimento prioritário" atende a fila prioritária, se esta estiver vazia, ajuda com a fila normal;
+#pragma omp parallel private( nmrAtd, id ) shared( normal, prioritaria, ficha ) num_threads(4)
 	{
 		do {
-			id = omp_get_thread_num(); // qual thread está executando?
-			// Se for a t0; gera um atendimento
-			if( id == 0 && tamanhoFila > 0 ) { // se remover "&& tamanhoFila > 0" vai gerar fichas indefinidamente
-				prioridade = rand() % 100;
+			id = omp_get_thread_num();
+
+			// Recepcionista
+			if( id == 0 && tamanhoFila > 0 ) {
+				prioridade = rand() % 100; // nível de prioridade
 				if( prioridade > prioritarias ) {
-					inserirFila(ficha, 0, &normal);
+					termGreen(false);
+					printf("t%d: Retirada a ficha %d (normal) para atendimento\n", id, ficha);
+					termDefault();
+
+					inserirFila(ficha, &normal);
+					sleep(tempoGerar);
 					atdN++;
 				} else {
-					inserirFila(ficha, 1, &prioritaria);
+					termYellow(false);
+					printf("t%d: Retirada a ficha %d (prioritária) para atendimento\n", id, ficha);
+					termDefault();
+
+					inserirFila(ficha, &prioritaria);
+					sleep(tempoGerar);
 					atdP++;
 				}
 				tamanhoFila--;
 				ficha++;
 			}
+			termDefault();
 
-			// Se for a t1; verifica se há fila e atende
-			if( id == 1 ) {
+			// Atendimento normal
+			if( id == 1 || id == 2 ) {
 				if( normal.cabeca ) {
 					if( nmrAtd > 2 ) {
-						termYellow(false);
-						printf("\tDando preferência para prioritárias\n");
+						printf("\tt%d: Dando preferência para prioritárias\n", id);
 						if( prioritaria.cabeca ) {
+							printf("\tt%d: A ficha %d foi atendida\n", id, prioritaria.cabeca->numFicha);
 							removerFila(&prioritaria);
-							nmrAtd = 0;
+							sleep(tempoAtender);
 						} else {
-							termRed(false);
-							printf("\tNão há fila prioritária\n");
-							termDefault();
+							printf("\tt%d: Não há fila prioritária\n", id);
+							nmrAtd = 0;
 						}
+
+						nmrAtd = 0;
+					} else {
+						printf("\tt%d: A ficha %d foi atendida\n", id, normal.cabeca->numFicha);
+						removerFila(&normal);
+						sleep(tempoAtender);
+
+						nmrAtd++;
 					}
-					removerFila(&normal);
-					nmrAtd++;
-				}
-				if( prioritaria.cabeca ) {
+				} else if( prioritaria.cabeca ) { // se não houver atendimentos normais, ajuda com a fila de prioritários
+					printf("\tt%d: Não há atendimentos normais, ajudando com prioritários\n", id);
+
+					printf("\tt%d: A ficha %d foi atendida\n", id, prioritaria.cabeca->numFicha);
 					removerFila(&prioritaria);
+					sleep(tempoAtender);
+				} else {
+					printf("\tt%d: Nada para fazer #coffeebreak\n", id);
+					sleep(1);
+				}
+			}
+
+			// Atendimento prioritário
+			if( id == 3 ) {
+				sleep(tempoAtender);
+				if( prioritaria.cabeca ) {
+					printf("\tt%d: A ficha %d foi atendida\n", id, prioritaria.cabeca->numFicha);
+					removerFila(&prioritaria);
+					sleep(tempoAtender);
+				} else if( normal.cabeca ) { // se não hourver prioritários, ajuda com a fila normal
+					printf("\tt%d: Não há atendimentos prioritários, ajudando com normais\n", id);
+
+					printf("\tt%d: A ficha %d foi atendida\n", id, normal.cabeca->numFicha);
+					removerFila(&normal);
+					sleep(tempoAtender);
+				} else {
+					printf("\tt%d: Nada para fazer #coffeebreak\n", id);
+					sleep(1);
 				}
 			}
 		} while( tamanhoFila > 0 || normal.cabeca || prioritaria.cabeca );
@@ -83,7 +132,7 @@ void inicializacao(Fila *f) {
  * @param valor int para ser inserido
  * @param f *Fila
 */
-void inserirFila(int valor, int prioritaria, Fila *f) {
+void inserirFila(int valor, Fila *f) {
 	Celula *novo;
 
 	novo = (Celula *) malloc(sizeof(Celula));
@@ -98,17 +147,6 @@ void inserirFila(int valor, int prioritaria, Fila *f) {
 		f->cauda->prox = novo;
 		f->cauda = novo;
 	}
-
-	if( prioritaria == 1 ) {
-		termYellow(true);
-		printf("Retirada a ficha %d (prioritária) para atendimento\n", valor);
-	} else {
-		termDefault();
-		printf("Retirada a ficha %d para atendimento\n", valor);
-	}
-
-	termDefault();
-	sleep(1); // demora 1 segundo para retirar a ficha
 }
 
 /**
@@ -116,7 +154,6 @@ void inserirFila(int valor, int prioritaria, Fila *f) {
  * @param f *Fila
 */
 int removerFila(Fila *f) {
-	sleep(2); // demora 2 segundos para atender a ficha
 	Celula *lixo;
 	int ficha;
 
@@ -130,14 +167,14 @@ int removerFila(Fila *f) {
 			f->cauda = NULL;
 		}
 
-		termGreen(true);
-		printf("\tA ficha %d foi atendida\n", ficha);
+		//termGreen(true);
+		//printf("\tA ficha %d foi atendida\n", ficha);
 		termDefault();
 
 		return ficha;
 	} else {
 		termRed(true);
-		printf("Fila vazia\n");
+		printf("\tFila vazia!\n");
 		termDefault();
 
 		return -27;

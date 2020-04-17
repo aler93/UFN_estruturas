@@ -6,13 +6,14 @@
 #include<time.h>
 #include<stdbool.h>
 #include<locale.h>
+#include<unistd.h>
+#include<omp.h>
 
 #include "terminalColor.c"
 
 // struct para a celula
 typedef struct nodo {
 	int numFicha;
-	int prioridade;
 	struct nodo *prox;
 } Celula;
 
@@ -22,13 +23,11 @@ typedef struct {
 	Celula *cauda;
 } Fila;
 
-int prioritarias = 50; // Porcentagem de fichas prioritarias geradas
-
 void inicializacao(Fila *f);
 void inserirFila(int valor, Fila *f);
-void fichasPrioritarias(int porcentagem);
+
 void new();
-void atender(int qnt, Fila *f);
+void atender(Fila *atd);
 
 int removerFila(Fila *f);
 
