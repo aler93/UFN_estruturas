@@ -7,8 +7,8 @@
 int main() {
 	new();
 
-	int prioritarias = 50; // Porcentagem de fichas prioritarias geradas
-	int tamanhoFila = 50;
+	int prioritarias = 33; // Porcentagem de fichas prioritarias geradas
+	int tamanhoFila = 100;
 
 	int prioridade, ficha = 1;
 	Fila normal, prioritaria;
