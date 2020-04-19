@@ -6,8 +6,10 @@
 
 int main() {
 	new();
+	double ti, tf;
+	ti = omp_get_wtime();
 
-	int prioritarias = 33; // Porcentagem de fichas prioritarias geradas
+	int prioritarias = 60; // Porcentagem de fichas prioritarias geradas
 	int tamanhoFila = 100;
 
 	int prioridade, ficha = 1;
@@ -113,6 +115,8 @@ int main() {
 	printf("\nForam geradas %d fichas normais e %d prioritárias\n\n", atdN, atdP);
 
 	termDefault();
+	tf = omp_get_wtime();
+	printf("Tempo de execução: %fs\n", tf-ti);
 
 	return 1;
 }
