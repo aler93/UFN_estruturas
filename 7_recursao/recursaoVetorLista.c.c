@@ -2,110 +2,110 @@
 #include <stdlib.h>
 
 typedef struct nodo {
-	int dado;
-	struct nodo *prox;
-} Celula;
+    int dado;
+    struct nodo *prox;
+}Celula;
 
 
 int somaR(int *v, int n) {
-	if (n > 0) {
-		return v[n - 1] + somaR(v, n - 1);
-	}
-	return 0;
+    if (n > 0) {
+       return v[n-1] + somaR(v, n-1);
+    }
+    return 0;
 }
 
 int maiorR(int *v, int n) {
-	if (n > 1) {
-		int vemDeCima = maiorR(v, n - 1);
-		if (vemDeCima > v[n - 1]) return vemDeCima;
-		return v[n - 1];
-	}
-	return v[n - 1];
+    if (n > 1){
+        int vemDeCima = maiorR(v, n-1);
+        if (vemDeCima > v[n-1]) return vemDeCima;
+        return v[n-1];
+    }
+    return v[n-1];
 
 }
 
 int contaCelulasR(Celula *l) {
-	if (l) {
-		return 1 + contaCelulasR(l->prox);
-	}
-	return 0;
+    if (l) {
+        return 1 + contaCelulasR(l->prox);
+    }
+    return 0;
 }
 
 int somaCelulasR(Celula *l) {
-	if (l) {
-		return l->dado + somaCelulasR(l->prox);
-	}
-	return 0;
+    if (l) {
+        return l->dado + somaCelulasR(l->prox);
+    }
+    return 0;
 }
 
 int localizaR(int valor, Celula *l) {
-	if (l) {
-		if (valor == l->dado) return 1;
-		/*else*/ return localizaR(valor, l->prox);
-	}
-	return 0;
+    if (l) {
+        if (valor == l->dado) return 1;
+        /*else*/ return localizaR(valor, l->prox);
+    }
+    return 0;
 }
 
 Celula *inserirR(int valor, Celula *l) {
-	if (l) {
-		l->prox = inserirR(valor, l->prox);
-		return l;
-	} else {
-		Celula *novo = (Celula *) malloc(sizeof(Celula));
-		novo->dado = valor;
-		novo->prox = NULL;
-		return novo;
-	}
+    if (l) {
+        l->prox = inserirR(valor, l->prox);
+        return l;
+    } else {
+        Celula *novo = (Celula *)malloc(sizeof(Celula));
+        novo->dado = valor;
+        novo->prox = NULL;
+        return novo;
+    }
 }
 
 void exibirR(Celula *l) {
-	if (l) {
-		printf("%d\t", l->dado);
-		exibirR(l->prox);
-	}
+    if (l){
+        printf("%d\t", l->dado);
+        exibirR(l->prox);
+    }
 }
 
 int main() {
-	Celula *lista = NULL;
+    Celula *lista = NULL;
 
-	int vetor[] = {12, 1, 5};
-	printf("A soma dos elementos do vetor eh %d\n", somaR(vetor, 3));
-	printf("O maior elemento do vetor eh %d\n", maiorR(vetor, 3));
+    int vetor[] = {12, 1, 5};
+    printf("A soma dos elementos do vetor eh %d\n", somaR(vetor,3));
+    printf("O maior elemento do vetor eh %d\n", maiorR(vetor,3));
 
-	lista = inserirR(10, lista);
-	lista = inserirR(12, lista);
-	lista = inserirR(3, lista);
+    lista = inserirR(10,lista);
+    lista = inserirR(12,lista);
+    lista = inserirR(3,lista);
 
-	exibirR(lista);
+    exibirR(lista);
 
-	return 0;
+    return 0;
 }
 
 /*
-RECURSï¿½O -> repetiï¿½ï¿½o sem instruï¿½ï¿½es de controle, mas sim
-com autochamamento do mï¿½todo (empilhamento/desempilhamento
+RECURSÃO -> repetição sem instruções de controle, mas sim
+com autochamamento do método (empilhamento/desempilhamento
 de processos)
 
     Tipos -> void
           -> return
 
     Conceitos
-          -> critï¿½rios de repetiï¿½ï¿½o
-            -> inicializaï¿½ï¿½o da variï¿½vel de controle (parï¿½metro)
-            -> teste de parada (ï¿½ um if no inï¿½cio do mï¿½todo)
-            -> transformaï¿½ï¿½o da variï¿½vel de controle
-                -> PONTO DE RECURSï¿½O
-          -> execuï¿½ï¿½o de cï¿½digo ao empilhar
-            -> instruï¿½ï¿½es codificadas antes da chamada do mï¿½todo
-          -> execuï¿½ï¿½o de cï¿½digo ao desempilhar
-            -> instruï¿½ï¿½es codificadas depois da chamada do mï¿½todo
+          -> critérios de repetição
+            -> inicialização da variável de controle (parâmetro)
+            -> teste de parada (é um if no início do método)
+            -> transformação da variável de controle
+                -> PONTO DE RECURSÃO
+          -> execução de código ao empilhar
+            -> instruções codificadas antes da chamada do método
+          -> execução de código ao desempilhar
+            -> instruções codificadas depois da chamada do método
 
 
 void metodo(<tipo> variavelControle) {
     if (variavelControle) {
-        <instruï¿½ï¿½o1>;
+        <instrução1>;
         metodo(variavelControle transformada);
-        <instruï¿½ï¿½oN>
+        <instruçãoN>
     }
 }
 
