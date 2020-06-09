@@ -92,35 +92,94 @@ int ehSimetrico(Grafo *g) {
 }
 
 int temCaminhoAmplitude(Grafo *g, int origem, int destino) {
-	return 1;
+	int i, no;
+	Fila fila;
+	inicializarFila(&fila);
+
+	int *visitados;
+	visitados = malloc(sizeof(int) * g->qtdVertices);
+	for (i = 0; i < g->qtdVertices; i++){
+		visitados[i] = 0;
+	}
+	int conta = 0;
+	visitados[origem] = 1;
+	no = origem;
+	do {
+		//usar o vertice - print, if, cont, ...
+		//conta++;
+		//printf("%d\t", no);
+		if (no == destino) return 1;
+
+		for (i = 0; i < g->qtdVertices; i++) {
+			if (g->matrizAdj[no][i] != 0 && !visitados[i]) {
+				visitados[i] = 1;
+				inserirFila(i, &fila);
+			}
+		}
+		no = removerFila(&fila);
+
+	} while (no != -1);
+	//printf("\nTotal de vértices visitados: %d\n\n", conta);
+	return 0; //nao tem caminho
 }
 
 void percorreAmplitude(Grafo *g, int origem) {
-	int *visitados;
+	int i, no;
 	Fila fila;
-	int i;
-	int no;
-
-	if (!g) return;
-
 	inicializarFila(&fila);
+
+	int *visitados;
 	visitados = malloc(sizeof(int) * g->qtdVertices);
-	for (i = 0; i < g->qtdVertices; i++) {
+	for (i = 0; i < g->qtdVertices; i++){
 		visitados[i] = 0;
 	}
+	int conta = 0;
+	visitados[origem] = 1;
 	no = origem;
-	visitados[no] = 1; //a origem começa como visitado
-
 	do {
-		//visitar o vértice (print, if, cont, ...)
+		//usar o vertice - print, if, cont, ...
+		conta++;
 		printf("%d\t", no);
+
 		for (i = 0; i < g->qtdVertices; i++) {
 			if (g->matrizAdj[no][i] != 0 && !visitados[i]) {
-				visitados[i] = 1; //marcar como visitado
-				inserirFila(i,&fila); //adicionar na fila
+				visitados[i] = 1;
+				inserirFila(i, &fila);
 			}
 		}
-		no = removerFila(&fila); //tem vertice na fila?
+		no = removerFila(&fila);
+
 	} while (no != -1);
-	printf("\n\n");
+	printf("\nTotal de vértices visitados: %d\n\n", conta);
+}
+
+void profundidadeR(Grafo *g, int no, int *visitados) {
+	int i;
+	//usar o vértice no - printf, if, cont
+	printf("%d\t", no);
+	for (i = 0; i < g->qtdVertices; i++) {
+		if (g->matrizAdj[no][i] != 0 && !visitados[i]) {
+			visitados[i] = 1;
+			profundidadeR(g, i, visitados); //chamada recursiva, ou seja é aqui que o nodo visitado é inserido na pilha
+		}
+	}
+}
+
+void percorreProfundidade(Grafo *g, int origem) {
+	int i, no;
+	
+	int *visitados;
+	visitados = malloc(sizeof(int) * g->qtdVertices);
+	for (i = 0; i < g->qtdVertices; i++){
+		visitados[i] = 0;
+	}
+
+	no = origem;
+	visitados[no] = 1;
+	profundidadeR(g, no, visitados); //chama a pilha recursiva do SO
+	printf("\n");
+}
+
+int temCaminhoProfundidade(Grafo *g, int origem, int destino) {
+
 }

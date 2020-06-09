@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 //tipo para a celula, como em pilhas e listas simples
 typedef struct nodo {
 	int conteudo;
